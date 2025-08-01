@@ -1,10 +1,10 @@
-# See https://fly.io/docs/app-guides/continuous-deployment-with-github-actions/
-
 name: Main
+
 on:
   push:
     branches:
       - main
+
 jobs:
   compile:
     name: Install deps and compile
@@ -307,8 +307,8 @@ jobs:
         env:
           MIX_ENV: test
         run: mix deps.unlock --check-unused
-  deploy:
-    name: Deploy app
+  deploy_production_app:
+    name: Deploy production app
     needs:
       - compile
       - credo
@@ -322,7 +322,6 @@ jobs:
       - test
       - unused_deps
     runs-on: ubuntu-latest
-    concurrency: deploy-group # optional: ensure only one action runs at a time
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -330,3 +329,4 @@ jobs:
       - run: flyctl deploy --remote-only
         env:
           FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
+          POOL_SIZE: 1
