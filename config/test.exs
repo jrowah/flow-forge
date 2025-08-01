@@ -1,4 +1,8 @@
 import Config
+config :flow_forge, Oban, testing: :manual
+config :flow_forge, token_signing_secret: "x0/JDt2NJLanOBjcAtdpxeSsw/RbT11v"
+config :bcrypt_elixir, log_rounds: 1
+config :ash, policies: [show_policy_breakdowns?: true]
 
 # Configure your database
 #

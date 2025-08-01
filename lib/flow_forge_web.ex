@@ -85,7 +85,7 @@ defmodule FlowForgeWeb do
       # HTML escaping functionality
       import Phoenix.HTML
       # Core UI components
-      import FlowForgeWeb.CoreComponents
+      use FlowForgeWeb.Components.MishkaComponents
 
       # Common modules used in templates
       alias Phoenix.LiveView.JS

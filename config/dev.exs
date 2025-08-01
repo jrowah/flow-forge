@@ -1,4 +1,5 @@
 import Config
+config :ash, policies: [show_policy_breakdowns?: true]
 
 # Configure your database
 config :flow_forge, FlowForge.Repo,
@@ -64,7 +65,7 @@ config :flow_forge, FlowForgeWeb.Endpoint,
   ]
 
 # Enable dev routes for dashboard and mailbox
-config :flow_forge, dev_routes: true
+config :flow_forge, dev_routes: true, token_signing_secret: "B3EWFhfMyV3r/2MAcnndIxw42fjqg9n6"
 
 # Do not include metadata nor timestamps in development logs
 config :logger, :default_formatter, format: "[$level] $message\n"

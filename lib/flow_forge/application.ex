@@ -11,11 +11,19 @@ defmodule FlowForge.Application do
       FlowForgeWeb.Telemetry,
       FlowForge.Repo,
       {DNSCluster, query: Application.get_env(:flow_forge, :dns_cluster_query) || :ignore},
+      {Oban,
+       AshOban.config(
+         Application.fetch_env!(:flow_forge, :ash_domains),
+         Application.fetch_env!(:flow_forge, Oban)
+       )},
       {Phoenix.PubSub, name: FlowForge.PubSub},
       # Start a worker by calling: FlowForge.Worker.start_link(arg)
       # {FlowForge.Worker, arg},
       # Start to serve requests, typically the last entry
-      FlowForgeWeb.Endpoint
+      FlowForgeWeb.Endpoint,
+      {Absinthe.Subscription, FlowForgeWeb.Endpoint},
+      AshGraphql.Subscription.Batcher,
+      {AshAuthentication.Supervisor, [otp_app: :flow_forge]}
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html
