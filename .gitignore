@@ -35,3 +35,9 @@ flow_forge-*.tar
 npm-debug.log
 /assets/node_modules/
 
+# Environment variables
+.env
+
+# .gitignore
+/priv/plts/*.plt
+/priv/plts/*.plt.hash

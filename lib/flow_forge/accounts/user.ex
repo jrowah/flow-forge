@@ -1,4 +1,7 @@
 defmodule FlowForge.Accounts.User do
+  @moduledoc """
+  This module defines the User resource in the FlowForge application.
+  """
   use Ash.Resource,
     otp_app: :flow_forge,
     domain: FlowForge.Accounts,

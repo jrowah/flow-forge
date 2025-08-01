@@ -88,8 +88,8 @@ defmodule FlowForgeWeb do
       use FlowForgeWeb.Components.MishkaComponents
 
       # Common modules used in templates
-      alias Phoenix.LiveView.JS
       alias FlowForgeWeb.Layouts
+      alias Phoenix.LiveView.JS
 
       # Routes generation with the ~p sigil
       unquote(verified_routes())

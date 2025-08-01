@@ -469,7 +469,7 @@ defmodule FlowForgeWeb.Components.Popover do
     |> JS.set_attribute({"aria-expanded", "false"}, to: "##{id}-trigger")
   end
 
-  defp tirgger_popover(),
+  defp tirgger_popover,
     do: "[&_.popover-content]:hover:visible [&_.popover-content]:hover:opacity-100"
 
   defp border_class("extra_small"), do: "border"

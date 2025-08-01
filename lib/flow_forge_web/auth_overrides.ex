@@ -1,4 +1,8 @@
 defmodule FlowForgeWeb.AuthOverrides do
+  @moduledoc """
+  This module defines UI overrides for AshAuthentication components.
+  It allows customization of the authentication UI components used in the FlowForge web application.
+  """
   use AshAuthentication.Phoenix.Overrides
 
   # configure your UI overrides here

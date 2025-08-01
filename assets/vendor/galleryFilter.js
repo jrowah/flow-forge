@@ -2,19 +2,19 @@ const GalleryFilter = {
   mounted() {
     // Extract configuration from data attributes and normalize to lowercase.
     // If data-default-filter isn't provided, it defaults to "all".
-    this.defaultFilter = (this.el.dataset.defaultFilter || "all").toLowerCase();
+    this.defaultFilter = (this.el.dataset.defaultFilter || 'all').toLowerCase()
 
     // Cache DOM elements.
-    this.items = Array.from(this.el.querySelectorAll("[data-gallery-item]"));
+    this.items = Array.from(this.el.querySelectorAll('[data-gallery-item]'))
     this.filterButtons = Array.from(
-      this.el.querySelectorAll("[data-gallery-filter]"),
-    );
+      this.el.querySelectorAll('[data-gallery-filter]')
+    )
 
     // Set up event listeners.
-    this._setupEventListeners();
+    this._setupEventListeners()
 
     // Apply initial filter without animation.
-    this.applyFilter(this.defaultFilter, null, true);
+    this.applyFilter(this.defaultFilter, null, true)
   },
 
   /**
@@ -22,20 +22,20 @@ const GalleryFilter = {
    */
   _setupEventListeners() {
     this.filterButtons.forEach((btn) => {
-      btn.addEventListener("click", () => {
-        if (btn.disabled) return;
+      btn.addEventListener('click', () => {
+        if (btn.disabled) return
         // Normalize filter value to lowercase for consistent matching.
-        const category = btn.dataset.category.toLowerCase();
-        if (category) this.applyFilter(category, btn);
-      });
+        const category = btn.dataset.category.toLowerCase()
+        if (category) this.applyFilter(category, btn)
+      })
 
-      btn.addEventListener("keydown", (e) => {
-        if (e.key === "Enter" || e.key === " ") {
-          e.preventDefault();
-          btn.click();
+      btn.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault()
+          btn.click()
         }
-      });
-    });
+      })
+    })
   },
 
   /**
@@ -47,13 +47,13 @@ const GalleryFilter = {
    * @returns {boolean} True if the item should be visible.
    */
   _isItemVisible(item, category) {
-    if (category === this.defaultFilter) return true;
+    if (category === this.defaultFilter) return true
     // Here, we expect that the data attribute contains a comma-separated string
     // representing an array of categories (e.g. "sky" or "sky,flowers").
     const itemCategories = item.dataset.category
-      .split(",")
-      .map((c) => c.trim().toLowerCase());
-    return itemCategories.includes(category);
+      .split(',')
+      .map((c) => c.trim().toLowerCase())
+    return itemCategories.includes(category)
   },
 
   /**
@@ -61,11 +61,11 @@ const GalleryFilter = {
    * @returns {Map<HTMLElement, DOMRect>} A map of items to their positions.
    */
   _captureItemPositions() {
-    const positions = new Map();
+    const positions = new Map()
     this.items.forEach((item) => {
-      positions.set(item, item.getBoundingClientRect());
-    });
-    return positions;
+      positions.set(item, item.getBoundingClientRect())
+    })
+    return positions
   },
 
   /**
@@ -74,13 +74,13 @@ const GalleryFilter = {
    */
   _updateItemVisibility(category) {
     this.items.forEach((item) => {
-      const isVisible = this._isItemVisible(item, category);
-      item.style.display = isVisible ? "" : "none";
+      const isVisible = this._isItemVisible(item, category)
+      item.style.display = isVisible ? '' : 'none'
       if (isVisible) {
-        item.style.opacity = "0";
-        item.style.transform = "scale(0.95)";
+        item.style.opacity = '0'
+        item.style.transform = 'scale(0.95)'
       }
-    });
+    })
   },
 
   /**
@@ -88,11 +88,11 @@ const GalleryFilter = {
    */
   _showItemsImmediately() {
     this.items.forEach((item) => {
-      if (item.style.display !== "none") {
-        item.style.opacity = "1";
-        item.style.transform = "scale(1)";
+      if (item.style.display !== 'none') {
+        item.style.opacity = '1'
+        item.style.transform = 'scale(1)'
       }
-    });
+    })
   },
 
   /**
@@ -102,47 +102,47 @@ const GalleryFilter = {
    */
   _animateItems(beforePositions, onComplete) {
     // Force browser reflow to ensure new positions are calculated.
-    void this.el.offsetWidth;
+    void this.el.offsetWidth
 
     const visibleItems = this.items.filter(
-      (item) => item.style.display !== "none",
-    );
-    let animationsRemaining = visibleItems.length;
+      (item) => item.style.display !== 'none'
+    )
+    let animationsRemaining = visibleItems.length
 
     if (animationsRemaining === 0) {
-      onComplete && onComplete();
-      return;
+      onComplete && onComplete()
+      return
     }
 
     visibleItems.forEach((item) => {
-      const before = beforePositions.get(item);
-      const after = item.getBoundingClientRect();
-      const dx = before.left - after.left;
-      const dy = before.top - after.top;
+      const before = beforePositions.get(item)
+      const after = item.getBoundingClientRect()
+      const dx = before.left - after.left
+      const dy = before.top - after.top
 
       if (dx || dy) {
-        item.style.transform = `translate(${dx}px, ${dy}px) scale(0.95)`;
+        item.style.transform = `translate(${dx}px, ${dy}px) scale(0.95)`
       }
 
-      item.style.opacity = "0";
+      item.style.opacity = '0'
 
       requestAnimationFrame(() => {
-        item.style.transition = "transform 300ms ease, opacity 300ms ease";
-        item.style.transform = "translate(0, 0) scale(1)";
-        item.style.opacity = "1";
+        item.style.transition = 'transform 300ms ease, opacity 300ms ease'
+        item.style.transform = 'translate(0, 0) scale(1)'
+        item.style.opacity = '1'
         item.addEventListener(
-          "transitionend",
+          'transitionend',
           () => {
-            item.style.transition = "";
-            animationsRemaining--;
+            item.style.transition = ''
+            animationsRemaining--
             if (animationsRemaining === 0) {
-              onComplete && onComplete();
+              onComplete && onComplete()
             }
           },
-          { once: true },
-        );
-      });
-    });
+          { once: true }
+        )
+      })
+    })
   },
 
   /**
@@ -152,16 +152,16 @@ const GalleryFilter = {
    */
   _updateActiveFilterButton(activeCategory) {
     this.filterButtons.forEach((btn) => {
-      const isActive = btn.dataset.category.toLowerCase() === activeCategory;
-      btn.setAttribute("aria-pressed", isActive);
+      const isActive = btn.dataset.category.toLowerCase() === activeCategory
+      btn.setAttribute('aria-pressed', isActive)
       if (isActive) {
-        btn.classList.add("active");
-        btn.disabled = true;
+        btn.classList.add('active')
+        btn.disabled = true
       } else {
-        btn.classList.remove("active");
-        btn.disabled = false;
+        btn.classList.remove('active')
+        btn.disabled = false
       }
-    });
+    })
   },
 
   /**
@@ -173,21 +173,21 @@ const GalleryFilter = {
   applyFilter(category, clickedButton = null, skipAnimation = false) {
     // Disable only the clicked button immediately.
     if (clickedButton) {
-      clickedButton.disabled = true;
+      clickedButton.disabled = true
     }
-    const beforePositions = this._captureItemPositions();
-    this._updateItemVisibility(category);
+    const beforePositions = this._captureItemPositions()
+    this._updateItemVisibility(category)
 
     if (skipAnimation) {
-      this._showItemsImmediately();
-      this._updateActiveFilterButton(category);
-      return;
+      this._showItemsImmediately()
+      this._updateActiveFilterButton(category)
+      return
     }
 
     this._animateItems(beforePositions, () => {
-      this._updateActiveFilterButton(category);
-    });
+      this._updateActiveFilterButton(category)
+    })
   },
-};
+}
 
-export default GalleryFilter;
+export default GalleryFilter

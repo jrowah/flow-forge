@@ -1,4 +1,7 @@
 defmodule FlowForgeWeb.Components.MishkaComponents do
+  @moduledoc """
+  This module provides a collection of reusable components for the FlowForge web application.
+  """
   defmacro __using__(_) do
     quote do
       import FlowForgeWeb.Components.Accordion,

@@ -1,4 +1,8 @@
 defmodule FlowForge.Accounts.Token do
+  @moduledoc """
+  This module defines the Token resource in the FlowForge application.
+  It is used to manage authentication tokens for users.
+  """
   use Ash.Resource,
     otp_app: :flow_forge,
     domain: FlowForge.Accounts,

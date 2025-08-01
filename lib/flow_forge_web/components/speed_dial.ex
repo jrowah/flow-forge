@@ -257,7 +257,7 @@ defmodule FlowForgeWeb.Components.SpeedDial do
     """
   end
 
-  defp trigger_dial(),
+  defp trigger_dial,
     do: "[&_.speed-dial-content]:hover:visible [&_.speed-dial-content]:hover:opacity-100"
 
   defp position_class("top") do

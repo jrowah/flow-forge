@@ -1,4 +1,8 @@
 defmodule FlowForge.Accounts.ApiKey do
+  @moduledoc """
+  This module defines the ApiKey resource in the FlowForge application.
+  It is used to manage API keys for users.
+  """
   use Ash.Resource,
     otp_app: :flow_forge,
     domain: FlowForge.Accounts,

@@ -1,0 +1,19 @@
+[
+  verbose: false,
+  private: false,
+  skip: false,
+  router: nil,
+  exit: false,
+  format: "txt",
+  out: nil,
+  threshold: :low,
+  ignore: ["Config.CSP", "Config.HTTPS", "RCE.CodeModule", "TRaversal.FileMOdule", "XSS.Raw"],
+  ignore_files: [
+    "lib/flow_forge_web/components/accordion.ex",
+    "lib/flow_forge_web/components/badge.ex",
+    "lib/flow_forge_web/components/button.ex",
+    "lib/flow_forge_web/components/indicator.ex",
+    "test/support/data_case.ex"
+  ],
+  version: false,
+]

@@ -9,10 +9,37 @@ defmodule FlowForge.MixProject do
       elixirc_paths: elixirc_paths(Mix.env()),
       start_permanent: Mix.env() == :prod,
       aliases: aliases(),
-      deps: deps(),
+      deps: deps() ++ atulabs_deps(),
       compilers: [:phoenix_live_view] ++ Mix.compilers(),
       listeners: [Phoenix.CodeReloader],
-      consolidate_protocols: Mix.env() != :dev
+      consolidate_protocols: Mix.env() != :dev,
+
+      # CI
+      dialyzer: [
+        plt_add_apps: [:ex_unit, :mix],
+        plt_file: {:no_warn, "priv/plts/dialyzer.plt"}
+      ],
+      preferred_cli_env: [
+        ci: :test,
+        coveralls: :test,
+        "coveralls.detail": :test,
+        "coveralls.html": :test,
+        credo: :test,
+        dialyzer: :test,
+        sobelow: :test
+      ],
+      test_coverage: [tool: ExCoveralls],
+
+      # Docs
+      name: "FlowForge",
+      source_url: "https://github.com/jrowah/flow-forge",
+      docs: [main: "README.md", extras: ["README.md", "CHANGELOG.md"], source_ref: "main"],
+      releases: [
+        flow_forge: [
+          version: "0.1.0",
+          applications: [flow_forge: :permanent]
+        ]
+      ]
     ]
   end
 
@@ -83,6 +110,21 @@ defmodule FlowForge.MixProject do
     ]
   end
 
+  defp atulabs_deps do
+    [
+      {:credo, "~> 1.7", only: :test, runtime: false},
+      {:dialyxir, "~> 1.4", only: :test, runtime: false},
+      {:doctest_formatter, "~> 0.4", only: [:dev, :test], runtime: false},
+      {:ex_doc, "~> 0.34", only: :dev, runtime: false},
+      {:ex_machina, "~> 2.8", only: :test},
+      {:excoveralls, "~> 0.18", only: :test},
+      {:faker, "~> 0.18", only: :test},
+      {:github_workflows_generator, "~> 0.1", only: :dev, runtime: false},
+      {:mix_audit, "~> 2.1", only: :test, runtime: false},
+      {:sobelow, "~> 0.13", only: [:dev, :test], runtime: false}
+    ]
+  end
+
   # Aliases are shortcuts or tasks specific to the current project.
   # For example, to install project dependencies and perform other setup tasks, run:
   #
@@ -91,17 +133,40 @@ defmodule FlowForge.MixProject do
   # See the documentation for `Mix` for more info on aliases.
   defp aliases do
     [
-      setup: ["deps.get", "ash.setup", "assets.setup", "assets.build", "run priv/repo/seeds.exs"],
+      setup: [
+        "deps.get",
+        "cmd cd assets && npm i -D prettier prettier-plugin-toml",
+        "ash.setup",
+        "assets.setup",
+        "assets.build",
+        "run priv/repo/seeds.exs"
+      ],
       "ecto.setup": ["ecto.create", "ecto.migrate", "run priv/repo/seeds.exs"],
       "ecto.reset": ["ecto.drop", "ecto.setup"],
       test: ["ash.setup --quiet", "test"],
-      "assets.setup": ["tailwind.install --if-missing", "esbuild.install --if-missing"],
+      "assets.setup": [
+        "tailwind.install --if-missing",
+        "esbuild.install --if-missing",
+        "esbuild.install --if-missing"
+      ],
       "assets.build": ["tailwind flow_forge", "esbuild flow_forge"],
       "assets.deploy": [
         "tailwind flow_forge --minify",
         "esbuild flow_forge --minify",
         "phx.digest"
-      ]
+      ],
+      ci: [
+        "deps.unlock --check-unused",
+        "deps.audit",
+        "hex.audit",
+        "sobelow --config .sobelow-conf",
+        "format --check-formatted",
+        "cmd cd assets && npx prettier -c .",
+        "credo --strict",
+        "dialyzer",
+        "test --cover --warnings-as-errors"
+      ],
+      prettier: ["cmd cd assets && npx prettier -w ."]
     ]
   end
 end

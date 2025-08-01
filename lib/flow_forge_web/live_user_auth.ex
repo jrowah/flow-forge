@@ -3,6 +3,7 @@ defmodule FlowForgeWeb.LiveUserAuth do
   Helpers for authenticating users in LiveViews.
   """
 
+  import AshAuthentication.Phoenix.LiveSession
   import Phoenix.Component
   use FlowForgeWeb, :verified_routes
 
@@ -10,7 +11,7 @@ defmodule FlowForgeWeb.LiveUserAuth do
   # To use, place the following at the top of that liveview:
   # on_mount {FlowForgeWeb.LiveUserAuth, :current_user}
   def on_mount(:current_user, _params, session, socket) do
-    {:cont, AshAuthentication.Phoenix.LiveSession.assign_new_resources(socket, session)}
+    {:cont, assign_new_resources(socket, session)}
   end
 
   def on_mount(:live_user_optional, _params, _session, socket) do
