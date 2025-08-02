@@ -1,0 +1,30 @@
+<div class="min-h-screen bg-base-100">
+  <!-- Navigation Header -->
+  <div class="navbar bg-base-200 shadow-lg">
+    <div class="navbar-start">
+      <h1 class="text-xl font-bold">FlowForge</h1>
+    </div>
+
+    <div class="navbar-end">
+      <div class="dropdown dropdown-end">
+        <.button class="btn btn-ghost">
+          <.icon name="hero-user-solid" class="w-6 h-6" />
+        </.button>
+        <div class="dropdown-content mt-2 p-2 shadow bg-base-100 rounded-box w-48">
+          <a class="dropdown-item" href="#" phx-click="logout">
+            <span>Sign Out</span>
+          </a>
+        </div>
+      </div>
+      <div class="mt-2 flex justify-between items-center">
+        <Layouts.theme_toggle />
+      </div>
+    </div>
+  </div>
+  
+<!-- Main Content -->
+  <div class="container mx-auto px-4 py-8">
+    <div class="text-2xl font-semibold mb-6">{@page_title}</div>
+    <!-- Your dashboard content goes here -->
+  </div>
+</div>
