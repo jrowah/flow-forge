@@ -48,6 +48,7 @@ defmodule FlowForgeWeb.Router do
       #
       # If an authenticated user must *not* be present:
       # on_mount {FlowForgeWeb.LiveUserAuth, :live_no_user}
+      live "/dashboard", Dashboard.Index, :index
     end
   end
 
